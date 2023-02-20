@@ -13,16 +13,23 @@ function App() {
     { id: 5, title: "JavaScript", body: "Description" },
   ])
 
-  return ( 
+  const [title, setTitle] = useState('')
+
+  const addNewPost = (e) => {
+    e.preventDefault()
+  }
+
+  return (
     <div className="App">
       <form action="#">
-        <MyInput type="text" placeholder='Post title' />
+        {/* Managed component */}
+        <MyInput type="text" placeholder='Post title' value={title} onChange={e => setTitle(e.target.value)}/>
         <MyInput type="text" placeholder='Post description' />
-        <MyButton disabled class="button">Create</MyButton>
+        <MyButton onClick={addNewPost}>Create</MyButton>
       </form>
-      <PostList posts={posts} title="Posts List 1"/>
+      <PostList posts={posts} title="Posts List 1" />
     </div>
   );
 }
- 
+
 export default App;
