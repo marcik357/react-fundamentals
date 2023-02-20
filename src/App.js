@@ -14,12 +14,19 @@ function App() {
   ])
 
   const [title, setTitle] = useState('')
-  const bodyInputRef = useRef()
+  const [body, setBody] = useState('')
 
   const addNewPost = (e) => {
     e.preventDefault()
-    console.log(title);
-    console.log(bodyInputRef.current.value);
+
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+    }
+    setPosts([...posts, newPost])
+    setTitle('')
+    setBody('')
   }
 
   return (
@@ -32,11 +39,11 @@ function App() {
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
-        {/* Unmanaged component */}
         <MyInput
-          ref={bodyInputRef}
           type="text"
           placeholder='Post description'
+          value={body}
+          onChange={e => setBody(e.target.value)}
         />
         <MyButton onClick={addNewPost}>Create</MyButton>
       </form>
