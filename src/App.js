@@ -3,6 +3,7 @@ import './styles/App.css';
 import PostList from './components/PostList';
 import PostForm from './components/PostForm';
 import MySelect from './components/UI/select/MySelect';
+import MyInput from './components/UI/input/MyInput';
 
 function App() {
   const [posts, setPosts] = useState([
@@ -14,6 +15,17 @@ function App() {
   ])
 
   const [selectedSort, setSelectedSort] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  function getSortedPosts() {
+    console.log('getSortedPosts');
+    if (selectedSort) {
+      return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+    }
+    return posts
+  }
+
+  const sortedPosts = getSortedPosts()
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -25,7 +37,6 @@ function App() {
 
   const sortPosts = (sort) => {
     setSelectedSort(sort)
-    setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
   }
 
   return (
@@ -33,6 +44,11 @@ function App() {
       <PostForm create={createPost} />
       <hr style={{ margin: '15px 0' }} />
       <div>
+        <MyInput
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder= "Find..."
+        />
         <MySelect
           value={selectedSort}
           onChange={sortPosts}
@@ -44,7 +60,7 @@ function App() {
         />
       </div>
       {posts.length !== 0
-        ? <PostList remove={removePost} posts={posts} title="Posts List 1" />
+        ? <PostList remove={removePost} posts={sortedPosts} title="Posts List 1" />
         : <h1 style={{ textAlign: 'center' }}>
           There are no posts!
         </h1>
